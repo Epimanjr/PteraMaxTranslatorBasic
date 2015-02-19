@@ -1,6 +1,12 @@
 package data;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,6 +38,28 @@ public class Dictionary {
     public Dictionary(Language language1, Language language2) {
         this.language1 = language1;
         this.language2 = language2;
+    }
+    
+    public void initializeListLinks() {
+        // File name in which we can find all links.
+        String filename = Config.folderName + "/" + Config.fileLinkName + this.language1.getIso() + this.language2.getIso() + ".pmt";
+        BufferedReader br;
+        try {
+            // Init
+            br = new BufferedReader(new FileReader(filename));
+            
+            // Loop
+            while(br.ready()) {
+                // Add to list
+                this.listLinks.add(new Link(this.language1, this.language2, br.readLine()));
+            }
+            // Close
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Language getLanguage1() {

@@ -37,6 +37,19 @@ public class Link {
     }
 
     /**
+     * Create a Link with a line of a file.
+     *
+     * @param l1 Language 1
+     * @param l2 Language 2
+     * @param fileline A line in a file
+     */
+    public Link(Language l1, Language l2, String fileline) {
+        String[] array = fileline.split("-");
+        this.word1 = new Word(l1, array[0]);
+        this.word2 = new Word(l2, array[1]);
+    }
+
+    /**
      * Check if the link already exists in file.
      *
      * @return boolean
@@ -49,12 +62,14 @@ public class Link {
         // Read the file
         BufferedReader br = new BufferedReader(new FileReader(filename));
         while (br.ready()) {
-            String[] array = br.readLine().split(";");
-            if (array.length < 4) {
+            String[] array = br.readLine().split("-");
+            if (array.length < 2) {
                 br.close();
                 throw new BadLineException();
             }
-            if (this.word1.getName().equals(array[1]) && this.word2.getName().equals(array[3])) {
+            String[] array0 = array[0].split(";");
+            String[] array1 = array[1].split(";");
+            if (this.word1.getName().equals(array0[1]) && this.word2.getName().equals(array1[1])) {
                 br.close();
                 return true;
             }
@@ -89,7 +104,7 @@ public class Link {
      * @return String
      */
     public String toStringForFile() {
-        return this.word1.toStringForFile() + ";" + this.word2.toStringForFile();
+        return this.word1.toStringForFile() + "-" + this.word2.toStringForFile();
     }
 
     public Word getWord1() {

@@ -6,7 +6,9 @@ package data;
  */
 public enum Gender {
 
-    Masculine("Masculine");
+    Masculine("M"),
+    Feminine("F"),
+    Neutral("N");
 
     /**
      * Gender.

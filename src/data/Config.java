@@ -12,6 +12,5 @@ package data;
 public class Config {
     
     public static String folderName = "data";
-    public static String fileWordName = "word";
     public static String fileLinkName = "link";
 }

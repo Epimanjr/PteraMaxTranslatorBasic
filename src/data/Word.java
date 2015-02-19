@@ -37,63 +37,39 @@ public class Word {
     private String name;
 
     /**
+     * Phonetic of the word.
+     */
+    private String phonetic;
+
+    /**
      * Create a word with a specific language, gender and name.
      *
      * @param language Language of the word.
      * @param gender Gender of the word.
      * @param name Name of the word.
+     * @param phonetic Phonetic of the word.
      */
-    public Word(Language language, Gender gender, String name) {
+    public Word(Language language, Gender gender, String name, String phonetic) {
         this.language = language;
         this.gender = gender;
         this.name = name;
+        this.phonetic = phonetic;
     }
 
     /**
-     * Check if the word already exists in file.
+     * Create a word with a specific language and a fileline.
      *
-     * @return boolean
-     * @throws java.io.FileNotFoundException If the file not exists.
-     * @throws exception.BadLineException If there is bad line.
+     * @param l Language
+     * @param fileline Line of a file
      */
-    public boolean existInFile() throws FileNotFoundException, IOException, BadLineException {
-        // Init filename
-        String filename = Config.folderName + "/" + Config.fileWordName + language.getIso() + ".pmt";
-        // Read the file
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        while (br.ready()) {
-            String[] array = br.readLine().split(";");
-            if (array.length < 2) {
-                br.close();
-                throw new BadLineException();
-            }
-            if (this.name.equals(array[1])) {
-                br.close();
-                return true;
-            }
+    public Word(Language l, String fileline) {
+        this.language = l;
+        String[] array = fileline.split(";");
+        if (array.length >= 3) {
+            this.gender = Gender.valueOf(array[0]);
+            this.name = array[1];
+            this.phonetic = array[2];
         }
-        br.close();
-        return false;
-    }
-
-    /**
-     * Insert the word in a file.
-     *
-     * @throws IOException IOException
-     * @throws java.io.FileNotFoundException FileNotFoundException
-     * @throws exception.BadLineException BadLineException
-     * @throws exception.AlreadyExistException AlreadyExistException
-     */
-    public void insertInFile() throws IOException, FileNotFoundException, BadLineException, AlreadyExistException {
-        if(existInFile()) {
-            throw new AlreadyExistException();
-        }
-        // Init filename
-        String filename = Config.folderName + "/" + Config.fileWordName + language.getIso()+ ".pmt";
-        // Write in the file
-        PrintWriter pw = new PrintWriter(new FileWriter(filename, true));
-        pw.println(toStringForFile());
-        pw.close();
     }
 
     /**
@@ -102,7 +78,7 @@ public class Word {
      * @return String
      */
     public String toStringForFile() {
-        return this.gender + ";" + this.name;
+        return this.gender + ";" + this.name + ";" + this.phonetic;
     }
 
     @Override
@@ -126,8 +102,6 @@ public class Word {
         }
         return true;
     }
-    
-    
 
     public Language getLanguage() {
         return language;
@@ -151,6 +125,14 @@ public class Word {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhonetic() {
+        return phonetic;
+    }
+
+    public void setPhonetic(String phonetic) {
+        this.phonetic = phonetic;
     }
 
 }
