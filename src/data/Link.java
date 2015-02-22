@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 /**
  *
@@ -48,6 +49,34 @@ public class Link {
         this.word1 = new Word(l1, array[0]);
         this.word2 = new Word(l2, array[1]);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.word1);
+        hash = 67 * hash + Objects.hashCode(this.word2);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Link other = (Link) obj;
+        if (!Objects.equals(this.word1, other.word1)) {
+            return false;
+        }
+        if (!Objects.equals(this.word2, other.word2)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
     /**
      * Check if the link already exists in file.

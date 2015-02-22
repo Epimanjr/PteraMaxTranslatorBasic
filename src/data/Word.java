@@ -25,11 +25,16 @@ public class Word {
      * Language of the word.
      */
     private Language language;
+    
+    /**
+     * Type of the word.
+     */
+    private String type;
 
     /**
      * Gender of the word.
      */
-    private Gender gender;
+    private String gender;
 
     /**
      * Name of the word.
@@ -45,12 +50,14 @@ public class Word {
      * Create a word with a specific language, gender and name.
      *
      * @param language Language of the word.
+     * @param type Type of the word.
      * @param gender Gender of the word.
      * @param name Name of the word.
      * @param phonetic Phonetic of the word.
      */
-    public Word(Language language, Gender gender, String name, String phonetic) {
+    public Word(Language language, String type, String gender, String name, String phonetic) {
         this.language = language;
+        this.type = type;
         this.gender = gender;
         this.name = name;
         this.phonetic = phonetic;
@@ -65,10 +72,11 @@ public class Word {
     public Word(Language l, String fileline) {
         this.language = l;
         String[] array = fileline.split(";");
-        if (array.length >= 3) {
-            this.gender = Gender.valueOf(array[0]);
-            this.name = array[1];
-            this.phonetic = array[2];
+        if (array.length >= 4) {
+            this.type = array[0];
+            this.gender = array[1];
+            this.name = array[2];
+            this.phonetic = array[3];
         }
     }
 
@@ -78,7 +86,7 @@ public class Word {
      * @return String
      */
     public String toStringForFile() {
-        return this.gender + ";" + this.name + ";" + this.phonetic;
+        return this.type + ";" + this.gender + ";" + this.name + ";" + this.phonetic;
     }
 
     @Override
@@ -111,13 +119,22 @@ public class Word {
         this.language = language;
     }
 
-    public Gender getGender() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
+    
 
     public String getName() {
         return name;

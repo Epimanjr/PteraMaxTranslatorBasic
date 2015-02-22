@@ -13,4 +13,17 @@ public class Config {
     
     public static String folderName = "data";
     public static String fileLinkName = "link";
+    
+    public static String[] listTypes = {
+        "v",
+        "n",
+        "adj",
+        "adv"
+    };
+    
+    public static String[] listGender = {
+        "M",
+        "F",
+        "N"
+    };
 }
