@@ -60,6 +60,9 @@ public class Dictionary {
         this.saveList();
     }
 
+    /**
+     * Public method to initialize.
+     */
     public final void init() {
         System.out.print("Init dictionary ... ");
         initializeListLinks();
@@ -85,7 +88,7 @@ public class Dictionary {
             // Close
             br.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error: file " + filename + " not found.");
         } catch (IOException ex) {
             Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
         }
