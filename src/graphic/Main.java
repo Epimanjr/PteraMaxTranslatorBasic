@@ -10,12 +10,15 @@ import data.Language;
 import data.Link;
 import data.Word;
 import exception.AlreadyExistException;
+import java.util.ArrayList;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -52,6 +55,7 @@ public class Main extends Application {
         private final Label label1 = new Label("Czech"), label2 = new Label("French");
         private final TextField name1 = new TextField(), name2 = new TextField();
         private final Button validate = new Button("Validate");
+        private final ListView showResult = new ListView();
         // End declare
 
         MainFrame() {
@@ -65,6 +69,10 @@ public class Main extends Application {
             label0.setTranslateY(Config.marginSearchTop);
             search.setTranslateX(Config.marginSearchLeft + Config.widthLabelSearch);
             search.setTranslateY(Config.marginSearchTop);
+            // Layout for result 
+            showResult.setTranslateX(Config.width / 2 - 100);
+            showResult.setTranslateY(Config.marginSearchTop + 50);
+            showResult.setPrefSize(200, 100);
             // Layout for add
             label1.setTranslateX(Config.width / 2 - Config.margin - Config.widthTextField);
             label1.setTranslateY(Config.height - Config.marginBottom - 20);
@@ -87,7 +95,7 @@ public class Main extends Application {
             });
             // Add to the children
             this.getChildren().add(labelTitle);
-            this.getChildren().addAll(label0, search);
+            this.getChildren().addAll(label0, search, showResult);
             this.getChildren().addAll(label1, label2);
             this.getChildren().addAll(name1, name2);
             this.getChildren().add(validate);
@@ -116,7 +124,10 @@ public class Main extends Application {
             // Search in czech
             Word result = czech.searchWord(word);
             // Show result
-            System.out.println(result.getName());
+            ArrayList<String> list = new ArrayList<>();
+            list.add(result.getName());
+            showResult.setItems(FXCollections.observableList(list));
+            //System.out.println(result.getName());
         }
 
     }
