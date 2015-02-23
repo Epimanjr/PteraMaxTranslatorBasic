@@ -61,6 +61,24 @@ public class Dictionary {
     }
 
     /**
+     * Search a word.
+     *
+     * @param name Name of the word.
+     * @return Other(s) word(s)
+     */
+    public Word searchWord(String name) {
+        Word search = new Word(Language.Czech, name, " ");
+        for (Link l : this.listLinks) {
+            if (l.getWord1().equals(search)) {
+                return l.getWord2();
+            } else if (l.getWord2().equals(search)) {
+                return l.getWord1();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Public method to initialize.
      */
     public final void init() {
@@ -124,13 +142,13 @@ public class Dictionary {
     private void saveList() {
         // File name in which we can find all links.
         String filename = Config.folderName + "/" + Config.fileLinkName + this.language1.getIso() + this.language2.getIso() + ".pmt";
-        
+
         PrintWriter pw;
         try {
             // Init
             pw = new PrintWriter(new FileWriter(filename));
             // Loop
-            for(Link l : listLinks) {
+            for (Link l : listLinks) {
                 pw.println(l.toStringForFile());
             }
             // Close

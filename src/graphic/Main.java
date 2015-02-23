@@ -10,17 +10,13 @@ import data.Language;
 import data.Link;
 import data.Word;
 import exception.AlreadyExistException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 
 /**
@@ -48,6 +44,7 @@ public class Main extends Application {
     class MainFrame extends Group {
 
         // Begin declare component
+        private final Label label0 = new Label("Search a word");
         private final TextField search = new TextField();
         private final Label label1 = new Label("Czech"), label2 = new Label("French");
         private final TextField name1 = new TextField(), name2 = new TextField();
@@ -55,7 +52,12 @@ public class Main extends Application {
         // End declare
 
         MainFrame() {
-            // Layout
+            // Layout for search
+            label0.setTranslateX(Config.marginSearchLeft);
+            label0.setTranslateY(Config.marginSearchTop);
+            search.setTranslateX(Config.marginSearchLeft + Config.widthLabelSearch);
+            search.setTranslateY(Config.marginSearchTop);
+            // Layout for add
             label1.setTranslateX(Config.width / 2 - Config.margin - Config.widthTextField);
             label1.setTranslateY(Config.height - Config.marginBottom - 20);
             name1.setPrefWidth(Config.widthTextField);
@@ -70,22 +72,44 @@ public class Main extends Application {
             validate.setTranslateY(Config.height - Config.marginBottom / 2);
             // Action
             validate.setOnAction((ActionEvent t) -> {
-                Word w1 = new Word(Language.Czech, name1.getText(), " ");
-                Word w2 = new Word(Language.French, name2.getText(), " ");
-                Link l1 = new Link(w1, w2);
-                try {
-                    czech.insertNewLink(l1);
-                } catch (AlreadyExistException ex) {
-                    validate.setStyle("-fx-base: #FF0000");
-                } finally {
-                    validate.setStyle("-fx-base: #00FF00");
-                }
+                actionValidate();
+            });
+            search.setOnAction((ActionEvent t) -> {
+                actionSearch(); 
             });
             // Add to the children
+            this.getChildren().addAll(label0, search);
             this.getChildren().addAll(label1, label2);
             this.getChildren().addAll(name1, name2);
             this.getChildren().add(validate);
         }
+
+        private void actionValidate() {
+            Word w1 = new Word(Language.Czech, name1.getText(), " ");
+            Word w2 = new Word(Language.French, name2.getText(), " ");
+            Link l1 = new Link(w1, w2);
+            String style = validate.getStyle();
+            try {
+                czech.insertNewLink(l1);
+
+                validate.setStyle("-fx-base: #00FF00");
+            } catch (AlreadyExistException ex) {
+                validate.setStyle("-fx-base: #FF0000");
+            }
+        }
+
+        /**
+         * Method called when we search a word.
+         */
+        private void actionSearch() {
+            // Get the search word
+            String word = search.getText();
+            // Search in czech
+            Word result = czech.searchWord(word);
+            // Show result
+            System.out.println(result.getName());
+        }
+
     }
 
     public static void main(String[] args) {

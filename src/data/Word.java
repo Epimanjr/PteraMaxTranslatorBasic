@@ -3,17 +3,7 @@
  */
 package data;
 
-import exception.AlreadyExistException;
-import exception.BadLineException;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -89,10 +79,7 @@ public class Word {
             return false;
         }
         final Word other = (Word) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
+        return this.name.equalsIgnoreCase(other.name);
     }
 
     public Language getLanguage() {
