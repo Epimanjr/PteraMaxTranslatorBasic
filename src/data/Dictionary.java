@@ -66,16 +66,17 @@ public class Dictionary {
      * @param name Name of the word.
      * @return Other(s) word(s)
      */
-    public Word searchWord(String name) {
+    public ArrayList<Word> searchWord(String name) {
+        ArrayList<Word> res = new ArrayList<>();
         Word search = new Word(Language.Czech, name, " ");
         for (Link l : this.listLinks) {
             if (l.getWord1().equals(search)) {
-                return l.getWord2();
+                res.add(l.getWord2());
             } else if (l.getWord2().equals(search)) {
-                return l.getWord1();
+                res.add(l.getWord1());
             }
         }
-        return null;
+        return res;
     }
 
     /**

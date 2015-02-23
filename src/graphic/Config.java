@@ -16,5 +16,5 @@ public class Config {
      */
     static int width = 500, height = 300;
     static int margin = 15, marginBottom = 60, marginSearchTop = 50, marginSearchLeft = 40;
-    static int widthTextField = 150, widthLabelSearch = 90;
+    static int widthTextField = 150, widthLabelSearch = 110;
 }

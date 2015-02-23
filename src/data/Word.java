@@ -107,4 +107,11 @@ public class Word {
         this.phonetic = phonetic;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+    
+    
+
 }

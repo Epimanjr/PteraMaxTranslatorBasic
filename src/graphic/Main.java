@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -52,9 +54,9 @@ public class Main extends Application {
         private final Label labelTitle = new Label(czech.getLanguage1().getName() + "-" + czech.getLanguage2().getName() + " translator !");
         private final Label label0 = new Label("Search a word");
         private final TextField search = new TextField();
-        private final Label label1 = new Label("Czech"), label2 = new Label("French");
+        private final Label label1 = new Label(czech.getLanguage1().getName()), label2 = new Label(czech.getLanguage2().getName());
         private final TextField name1 = new TextField(), name2 = new TextField();
-        private final Button validate = new Button("Validate");
+        private final Button validate = new Button("Validate the new word");
         private final ListView showResult = new ListView();
         // End declare
 
@@ -64,6 +66,7 @@ public class Main extends Application {
             labelTitle.setFont(f);
             labelTitle.setTranslateX(20);
             labelTitle.setTranslateY(10);
+            labelTitle.setTextFill(Color.web("#00DD00"));
             // Layout for search
             label0.setTranslateX(Config.marginSearchLeft);
             label0.setTranslateY(Config.marginSearchTop);
@@ -84,15 +87,29 @@ public class Main extends Application {
             name2.setPrefWidth(Config.widthTextField);
             name2.setTranslateX(Config.width / 2 + Config.margin);
             name2.setTranslateY(Config.height - Config.marginBottom);
-            validate.setTranslateX(Config.width / 2 - 30);
+            validate.setTranslateX(Config.width / 2 - 80);
             validate.setTranslateY(Config.height - Config.marginBottom / 2);
             // Action
-            validate.setOnAction((ActionEvent t) -> {
-                actionValidate();
+            validate.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent t) {
+                    actionValidate();
+                }
             });
-            search.setOnAction((ActionEvent t) -> {
-                actionSearch(); 
+            search.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent t) {
+                    actionSearch();
+                }
             });
+            /*validate.setOnAction((ActionEvent t) -> {
+             actionValidate();
+             });
+             search.setOnAction((ActionEvent t) -> {
+             actionSearch(); 
+             });*/
             // Add to the children
             this.getChildren().add(labelTitle);
             this.getChildren().addAll(label0, search, showResult);
@@ -102,15 +119,19 @@ public class Main extends Application {
         }
 
         private void actionValidate() {
-            Word w1 = new Word(Language.Czech, name1.getText(), " ");
-            Word w2 = new Word(Language.French, name2.getText(), " ");
-            Link l1 = new Link(w1, w2);
-            String style = validate.getStyle();
-            try {
-                czech.insertNewLink(l1);
+            if (!name1.getText().equals("") && !name2.getText().equals("")) {
+                Word w1 = new Word(Language.Czech, name1.getText(), " ");
+                Word w2 = new Word(Language.French, name2.getText(), " ");
+                Link l1 = new Link(w1, w2);
+                String style = validate.getStyle();
+                try {
+                    czech.insertNewLink(l1);
 
-                validate.setStyle("-fx-base: #00FF00");
-            } catch (AlreadyExistException ex) {
+                    validate.setStyle("-fx-base: #00FF00");
+                } catch (Exception ex) {
+                    validate.setStyle("-fx-base: #FF0000");
+                }
+            } else {
                 validate.setStyle("-fx-base: #FF0000");
             }
         }
@@ -122,11 +143,11 @@ public class Main extends Application {
             // Get the search word
             String word = search.getText();
             // Search in czech
-            Word result = czech.searchWord(word);
+            ArrayList<Word> result = czech.searchWord(word);
             // Show result
-            ArrayList<String> list = new ArrayList<>();
-            list.add(result.getName());
-            showResult.setItems(FXCollections.observableList(list));
+            if (result != null) {
+                showResult.setItems(FXCollections.observableList(result));
+            }
             //System.out.println(result.getName());
         }
 
