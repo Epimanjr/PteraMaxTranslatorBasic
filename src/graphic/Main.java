@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -38,12 +39,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(mainFrame, Config.width, Config.height));
+        stage.setTitle(czech.getLanguage1().getName() + "-" + czech.getLanguage2().getName() + " translator !");
         stage.show();
     }
 
     class MainFrame extends Group {
 
         // Begin declare component
+        private final Label labelTitle = new Label(czech.getLanguage1().getName() + "-" + czech.getLanguage2().getName() + " translator !");
         private final Label label0 = new Label("Search a word");
         private final TextField search = new TextField();
         private final Label label1 = new Label("Czech"), label2 = new Label("French");
@@ -52,6 +55,11 @@ public class Main extends Application {
         // End declare
 
         MainFrame() {
+            // Layout for title Label
+            Font f = new Font("Calibri", 22);
+            labelTitle.setFont(f);
+            labelTitle.setTranslateX(20);
+            labelTitle.setTranslateY(10);
             // Layout for search
             label0.setTranslateX(Config.marginSearchLeft);
             label0.setTranslateY(Config.marginSearchTop);
@@ -78,6 +86,7 @@ public class Main extends Application {
                 actionSearch(); 
             });
             // Add to the children
+            this.getChildren().add(labelTitle);
             this.getChildren().addAll(label0, search);
             this.getChildren().addAll(label1, label2);
             this.getChildren().addAll(name1, name2);
